@@ -34,3 +34,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Create spect folder ##
 
 > node node_modules/jasmine/bin/jasmine.js init
+
+## Jasmine Console Reporter ##
+
+> npm i jasmine-console-reporter --save-dev
