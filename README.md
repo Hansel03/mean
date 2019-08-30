@@ -38,3 +38,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Jasmine Console Reporter ##
 
 > npm i jasmine-console-reporter --save-dev
+
+## Install package nyc #
+
+> npm install --save-dev nyc
