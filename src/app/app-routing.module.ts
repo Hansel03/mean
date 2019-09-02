@@ -4,7 +4,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { PinsComponent } from './components/pins/pins.component';
 import { FormComponent } from './components/form/form.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'app',
     component: LayoutComponent,
@@ -30,4 +30,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

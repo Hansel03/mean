@@ -1,8 +1,18 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { RouterOutlet } from '@angular/router';
+import { By } from '@angular/platform-browser';
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
+
+  // se crear un fixture del componente
+  // El ComponenetFixture nos permite acceder a todas las propiedades de la clase
+  let fixture: ComponentFixture<AppComponent>;
+
+  // variable del componete a probar
+  let component = AppComponent;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -14,22 +24,20 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+  // Antes de cada una de las pruebas se debe cargar el componente a utilizar
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.debugElement.componentInstance;
   });
 
-  it(`should have as title 'pin'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('pin');
+  it('Should have a router oulet', () => {
+    const de = fixture.debugElement.query(By.directive(RouterOutlet));
+
+    expect(de).not.toBeNull();
+
   });
 
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to pin!');
-  });
+
+
+
 });
