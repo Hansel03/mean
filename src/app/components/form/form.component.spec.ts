@@ -6,7 +6,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { MatSnackBar } from '@angular/material';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormArray } from '@angular/forms';
 
 
 
@@ -59,4 +59,38 @@ fdescribe('FormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // Testear ls inicializacion de los formularios
+  describe('When component is initializated', () => {
+    it('Should create the form', () => {
+      expect(Object.keys(component.firstFormGroup.controls)).toEqual([
+        'title',
+        'author',
+        'description'
+      ]);
+
+      expect(Object.keys(component.secondFormGroup.controls)).toEqual([
+        'firstAsset',
+        'assets'
+      ]);
+    });
+  });
+
+
+  describe('When addAsset is executed', () => {
+
+    it('Should add new group', () => {
+      const assets = <FormArray>component.secondFormGroup.get('assets');
+
+      component.addAsset();
+      component.addAsset();
+
+      expect(Object.keys(assets.controls)).toEqual([
+        '0', '1'
+      ]);
+    });
+
+
+  });
+
 });
