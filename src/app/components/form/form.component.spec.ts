@@ -93,4 +93,41 @@ fdescribe('FormComponent', () => {
 
   });
 
+
+
+  // Agrupar prueba del deleteAssets
+  describe('When deleteAsset', () => {
+    it('Should remove the form control', () => {
+      const assets = <FormArray>component.secondFormGroup.get('assets');
+
+      component.addAsset();
+      component.deleteAsset(0);
+
+      expect(Object.keys(assets.controls)).toEqual([]);
+    });
+  });
+
+
+
+  describe('When savePins is executed', () => {
+    it('Should navigate to pins view', () => {
+      // se llama <any> al componente para acceder a la propiedad private
+      const navigate = spyOn((<any>component).navigate, 'goToPins');
+      const open = spyOn((<any>component).snackBar, 'open').and.callThrough();
+
+      component.savePin();
+
+      // probar que la subcription es llamada
+      expect(navigate).toHaveBeenCalled();
+
+      // verifiar que el mensaje del snackBar no cambie
+      expect(open).toHaveBeenCalledWith('Your pin is saved, Redirecting ...', 'Cool!', {
+        duration: 2000
+      });
+
+    });
+  });
+
+
+
 });
