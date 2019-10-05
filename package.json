@@ -9,7 +9,8 @@
         "test:server": "./node_modules/jasmine/bin/jasmine.js",
         "test:server:coverage": "nyc node spec/specs.js",
         "lint": "ng lint",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "coverage": "ng test --codeCoverage"
     },
     "private": true,
     "dependencies": {
