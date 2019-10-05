@@ -66,4 +66,15 @@ fdescribe("LayoutComponent", () => {
 
     expect(open).toHaveBeenCalledWith(ActionsComponent);
   });
+
+  it("Should set the editMode to true", () => {
+    fixture.ngZone.run(() => {
+      (<any>component).router.navigate(["app/add"]);
+
+      fixture.whenStable().then(() => {
+        // Esperamos que la veriable editMode sea verdadera
+        expect(component.editMode).toBeTruthy();
+      });
+    });
+  });
 });
