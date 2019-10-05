@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { MatBottomSheet } from '@angular/material';
-import { ActionsComponent } from '../actions/actions.component';
-import { Router, NavigationStart } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Component } from "@angular/core";
+import { MatBottomSheet } from "@angular/material";
+import { ActionsComponent } from "../actions/actions.component";
+import { Router, NavigationStart } from "@angular/router";
+import { filter } from "rxjs/operators";
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  selector: "app-layout",
+  templateUrl: "./layout.component.html",
+  styleUrls: ["./layout.component.scss"]
 })
 export class LayoutComponent {
   public editMode = false;
@@ -17,13 +17,15 @@ export class LayoutComponent {
   ngOnInit() {
     this.verifyEditMode(this.router.url);
 
-    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
-      this.verifyEditMode(event.url);
-    });
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationStart))
+      .subscribe((event: NavigationStart) => {
+        this.verifyEditMode(event.url);
+      });
   }
 
   public verifyEditMode(url) {
-    if (url === '/app/add') {
+    if (url === "/app/add") {
       this.editMode = true;
     } else {
       this.editMode = false;
