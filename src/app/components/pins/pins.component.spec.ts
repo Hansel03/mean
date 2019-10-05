@@ -1,16 +1,57 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { PINS } from "src/app/services/mocks/pins";
+import { PinsComponent } from "./pins.component";
+import { RepositoryService } from "src/app/services/repository.service";
+import { MatSnackBar } from "@angular/material";
+import { PinsService } from "./pins.service";
+import { ReactiveFormsModule } from "@angular/forms";
+import { Subject, of } from "rxjs";
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 
-import { PinsComponent } from './pins.component';
+class RepositoryServiceStub {
+  observer = new Subject();
 
-describe('PinsComponent', () => {
+  getPins() {
+    return this.observer;
+  }
+
+  resolvePins() {
+    this.observer.next(JSON.parse(JSON.stringify(PINS)));
+  }
+
+  updatePin() {
+    return of(true);
+  }
+}
+
+class MatSnackBarStub {
+  open() {}
+}
+
+class PinsServiceStub {
+  observer = new Subject();
+  $actionObserver = this.observer.asObservable();
+
+  public resolve(action) {
+    return this.observer.next(action);
+  }
+}
+
+fdescribe("PinsComponent", () => {
   let component: PinsComponent;
   let fixture: ComponentFixture<PinsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PinsComponent ]
-    })
-    .compileComponents();
+      declarations: [PinsComponent],
+      providers: [
+        { provide: RepositoryService, useClass: RepositoryServiceStub },
+        { provide: MatSnackBar, useClass: MatSnackBarStub },
+        { provide: PinsService, useClass: PinsServiceStub }
+      ],
+      imports: [ReactiveFormsModule],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +60,38 @@ describe('PinsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
+  });
+
+  it("When new page is open", () => {
+    const open = spyOn(window, "open");
+
+    component.openUrl("https://google.com");
+
+    expect(open).toHaveBeenCalledWith("https://google.com", "_blank");
+  });
+
+  it("When update progress", () => {
+    component.pins = PINS;
+    const pin = PINS[0];
+    const updatePin = spyOn(
+      (<any>component).repository,
+      "updatePin"
+    ).and.returnValue(of(true));
+    const open = spyOn((<any>component).snackBar, "open");
+    const pinService = TestBed.get(PinsService);
+
+    pinService.resolve("save");
+
+    expect(open).toHaveBeenCalled();
+    expect(updatePin).toHaveBeenCalledWith(pin._id, {
+      title: pin.title,
+      author: pin.author,
+      description: pin.description,
+      percentage: pin.percentage,
+      tags: pin.tags,
+      assets: pin.assets
+    });
   });
 });

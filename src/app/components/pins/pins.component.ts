@@ -1,15 +1,15 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { RepositoryService } from 'src/app/services/repository.service';
-import { MatSnackBar } from '@angular/material';
-import { PinsService } from './pins.service';
-import { filter } from 'rxjs/operators';
-import { FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Component, ViewEncapsulation } from "@angular/core";
+import { RepositoryService } from "src/app/services/repository.service";
+import { MatSnackBar } from "@angular/material";
+import { PinsService } from "./pins.service";
+import { filter } from "rxjs/operators";
+import { FormBuilder } from "@angular/forms";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-pins',
-  templateUrl: './pins.component.html',
-  styleUrls: ['./pins.component.scss'],
+  selector: "app-pins",
+  templateUrl: "./pins.component.html",
+  styleUrls: ["./pins.component.scss"],
   encapsulation: ViewEncapsulation.None
 })
 export class PinsComponent {
@@ -40,9 +40,11 @@ export class PinsComponent {
       });
     });
 
-    this.pinsService.$actionObserver.pipe(filter(action => action === 'save')).subscribe(action => {
-      this.updateProgress(this.step);
-    });
+    this.pinsService.$actionObserver
+      .pipe(filter(action => action === "save"))
+      .subscribe(action => {
+        this.updateProgress(this.step);
+      });
   }
 
   public setStep(index: number) {
@@ -71,14 +73,14 @@ export class PinsComponent {
         assets: pin.assets
       })
       .subscribe(pin => {
-        this.snackBar.open('Progress updated!', 'OK', {
+        this.snackBar.open("Progress updated!", "OK", {
           duration: 2000
         });
       });
   }
 
   public openUrl(URL: string): void {
-    window.open(URL, '_blank');
+    window.open(URL, "_blank");
   }
 
   private updatePercentage(index) {
@@ -86,7 +88,9 @@ export class PinsComponent {
       this.currentSubscription.unsubscribe();
     }
 
-    this.currentSubscription = this.pins[index].formGroup.valueChanges.subscribe(values => {
+    this.currentSubscription = this.pins[
+      index
+    ].formGroup.valueChanges.subscribe(values => {
       const keys = Object.keys(values);
       const total = keys.length;
       const active = keys.map(key => values[key]).filter(value => value);
